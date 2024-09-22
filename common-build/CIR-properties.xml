@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<project xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
+  <property name="thirdparty.dir" value="${root.dir}/ThirdParty"/>
+  <property name="nantcontrib.path" value="${thirdparty.dir}/Build/nantcontrib-0.85/bin/NAnt.Contrib.Tasks.dll"/>
+   <property name="log4net.path" value="${thirdparty.dir}/Runtime/log4net-1.2.10/bin/net/2.0/release/log4net.dll"/>
+  <property name="zlib.path" value="${thirdparty.dir}/Runtime/CSharpZLIB/net-20/ICSharpCode.SharpZipLib.dll"/>
+  <property name="nunit.executable" value="${thirdparty.dir}/Test/NUnit-2.4.7-net-2.0/bin/nunit-console.exe"/>
+  <property name="nunit.addindir" value="${thirdparty.dir}/Test/NUnit-2.4.7-net-2.0/bin/addins"/>
+  <property name="nunit.path" value="${thirdparty.dir}/Test/NUnit-2.4.7-net-2.0/bin/nunit.framework.dll"/>
+  <property name="nunit.extension" value="${nunit.addindir}/NUnitExtension.IterativeTest.dll"/>
+  <property name="nunit.addin" value="${nunit.addindir}/NUnitExtension.IterativeTest.AddIn.dll"/>
+  <property name="CSharpOptParse.path" value="${thirdparty.dir}/Runtime/CSharpOptParse 1.0.1/CSharpOptParse.dll"/>
+  <property name="default.exclude" value="Properties/*.cs"/>
+  <property name="cir.license.file" value="${root.dir}/common-build/BuildResources/License.txt"/>
+</project>

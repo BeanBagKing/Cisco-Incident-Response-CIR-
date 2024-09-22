@@ -1,0 +1,188 @@
+<?xml version="1.0" ?>
+<project xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
+
+	<include buildfile="common.xml" />
+
+
+
+
+  <property overwrite="false" name="assembly.copyright" value="Recurity-Labs GmbH All rights reserved." />
+
+
+  <target name="common.compile-dll"
+				description="Compile sources into a DLL">
+    <csc
+      verbose="true"
+      platform="anycpu"
+			target="library"
+			define="${current.build.defines}"
+			debug="${build.debug}"
+			output="${bin.dir}/${project.name}.dll"
+			checked="true"
+			optimize="${build.release}"
+			warninglevel="4"
+			warnaserror="false"
+      keyfile="${key.file}"
+		  rebuild="false"
+      >
+      <nowarn>
+        <warning number="1591" />
+        <!-- No XML comment for publicly visible member 	"-->
+      </nowarn>
+      <references refid="project.references"/>
+      <sources refid="project.sources" />
+      <resources refid="project.resources" />
+
+
+    </csc>
+
+  </target>
+
+  <!-- Same as compile-dll just without signing -->
+  <target name="common.compile-test-dll"
+       description="Compile sources into a Test DLL">
+    <csc
+      verbose="true"
+      platform="anycpu"
+			target="library"
+			define="${current.build.defines}"
+			debug="${build.debug}"
+			output="${bin.dir}/${project.name}.dll"
+			checked="true"
+			optimize="${build.release}"
+			warninglevel="4"
+			warnaserror="false"
+		  rebuild="false"
+      >
+      <nowarn>
+        <warning number="1591" />
+        <!-- No XML comment for publicly visible member 	"-->
+      </nowarn>
+      <references refid="project.references.test"/>
+      <sources refid="project.sources.test" />
+      <resources refid="project.resources.test" />
+
+
+    </csc>
+
+  </target>
+
+  <target name="common.compile-exe"
+				description="Compile sources into a console executable">
+
+    <csc
+			platform="anycpu"
+			target="exe"
+			define="${current.build.defines}"
+			debug="${build.debug}"
+			output="${bin.dir}/${project.name}.exe"
+			checked="true"
+			optimize="${build.release}"
+			warninglevel="4"
+			warnaserror="false"
+	    keyfile="${key.file}"
+	  	rebuild="false">
+      <nowarn>
+        <warning number="1591" />
+        <!-- No XML comment for publicly visible member keyfile="${key.file}"-->
+      </nowarn>
+      <sources refid="project.sources" />
+      <references refid="project.references" />
+      <resources refid="project.resources" />
+
+    </csc>
+
+  </target>
+  <target name="common.compile-winexe"
+          description="Compile sources into a console executable">
+
+    <csc
+			platform="anycpu"
+			target="winexe"
+			define="${current.build.defines}"
+			debug="${build.debug}"
+			output="${bin.dir}/${project.name}.exe"
+			checked="true"
+			optimize="${build.release}"
+			warninglevel="4"
+			warnaserror="false"
+	    keyfile="${key.file}"
+	  	rebuild="false">
+      <nowarn>
+        <warning number="1591" />
+        <!-- No XML comment for publicly visible member keyfile="${key.file}"-->
+      </nowarn>
+      <sources refid="project.sources" />
+      <references refid="project.references" />
+      <resources refid="project.resources" />
+
+    </csc>
+
+  </target>
+
+
+  <target name="common.set-assembly-attribute-values">
+    <property overwrite="false" name="assembly.is-cls-compliant" value="false" />
+    <property overwrite="false" name="assembly.allow-partially-trusted-callers" value="false" />
+    
+    <property  name="assembly.title"
+     value="${project.name} for ${framework::get-description(framework::get-target-framework())}" />
+    <property name="assembly.company" value="${project.company}" />
+	</target>
+
+	<target name="common.generate-assemblyinfo"
+		depends="common.init common.set-assembly-attribute-values"
+		description="Generate AssemblyInfo.cs using assembly.* properties."
+	>
+		<attrib file="AssemblyInfo.cs" readonly="false" />
+		<asminfo output="AssemblyInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System" />
+				<import namespace="System.Reflection" />
+				<import namespace="System.Runtime.CompilerServices" />
+				<import namespace="System.Security" if="${assembly.allow-partially-trusted-callers}" />
+			</imports>
+			<attributes>
+				<attribute type="CLSCompliantAttribute" value="${assembly.is-cls-compliant}" />
+				<attribute type="AssemblyTitleAttribute" value="${assembly.title}" />
+				<attribute type="AssemblyDescriptionAttribute" value="${assembly.description}" />
+				<attribute type="AssemblyCompanyAttribute" value="${assembly.company}" />
+				<attribute type="AssemblyProductAttribute" value="${assembly.product}" />
+				<attribute type="AssemblyCopyrightAttribute" value="${assembly.copyright}" />
+				<attribute type="AssemblyVersionAttribute" value="${assembly.version}" />
+				<attribute type="AssemblyInformationalVersionAttribute" value="${assembly.version.informational}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${assembly.version.file}" />
+			</attributes>
+		</asminfo>
+	</target>
+
+
+	<target name="copy-resources">
+	  <copy todir="${bin.dir}" overwrite="true">
+		<fileset refid="project.supportfiles"/>
+	  </copy>
+	  
+		<copy todir="${bin.dir}">
+			<fileset refid="thirdparty.references"/>
+		</copy>
+    
+		<copy file="Release.App.config" tofile="${bin.dir}/${project.name}.${assembly.type}.config" if="${file::exists('Release.App.config')}"		/>
+	</target>
+
+  <target name="copy-test-resources">
+    <copy todir="${bin.dir}" overwrite="true">
+      <fileset refid="project.supportfiles"/>
+    </copy>
+
+    <copy todir="${bin.dir}">
+      <fileset refid="thirdparty.references.test"/>
+    </copy>
+
+    <copy file="Release.App.config" tofile="${bin.dir}/${project.name}.${assembly.type}.config" if="${file::exists('Release.App.config')}"		/>
+  </target>
+  
+  <target name="run-tests">
+    <NUnit assembly="${bin.dir}/${project.name}.dll" addindir="${nunit.addindir}" outputfile="TestResult.xml">
+    </NUnit>
+  </target>
+</project>

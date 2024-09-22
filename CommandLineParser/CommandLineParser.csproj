@@ -1,0 +1,86 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C3479EDE-2662-4233-9854-6FC34933F117}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Recurity.CommandLineParser</RootNamespace>
+    <AssemblyName>RecurityCommandLineParser</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ThirdParty\Test\NUnit-2.4.7-net-2.0\bin\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\BuilderException.cs" />
+    <Compile Include="Attributes\GroupAttribute.cs" />
+    <Compile Include="Attributes\OptionAttribute.cs" />
+    <Compile Include="Attributes\OptionBuilder.cs" />
+    <Compile Include="Group\GroupValidationException.cs" />
+    <Compile Include="Group\GroupValidator.cs" />
+    <Compile Include="UnitTest\AssertUtils.cs" />
+    <Compile Include="UnitTest\Grouping\GroupValidatorUnitTest.cs" />
+    <Compile Include="Utils\ConverterStage.cs" />
+    <Compile Include="Commandline.cs" />
+    <Compile Include="Attributes\ExtractOptionsStage.cs" />
+    <Compile Include="CommandlineUsage.cs" />
+    <Compile Include="Group\ValidateGroupsStage.cs" />
+    <Compile Include="Utils\Pair.cs" />
+    <Compile Include="ParserContext.cs" />
+    <Compile Include="ParserStage.cs" />
+    <Compile Include="CommandlineOption.cs" />
+    <Compile Include="Utils\ConversionException.cs" />
+    <Compile Include="StageException.cs" />
+    <Compile Include="Utils\StringConverter.cs" />
+    <Compile Include="Group\Group.cs" />
+    <Compile Include="Parser\ArgumentParser.cs" />
+    <Compile Include="Parser\OptionFormatException.cs" />
+    <Compile Include="Parser\ParseArgumentsStage.cs" />
+    <Compile Include="Parser\ParseException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CommandlineException.cs" />
+    <Compile Include="UnitTest\Attributes\OptionBuilderUnitTest.cs" />
+    <Compile Include="UnitTest\CommandlineParserUnitTest.cs" />
+    <Compile Include="UnitTest\ExtractOptionsStageUnitTest.cs" />
+    <Compile Include="UnitTest\StringConverterUnitTest.cs" />
+    <Compile Include="UnitTest\Parser\CommandlineParserUnitTest.cs" />
+    <Compile Include="UnitTest\Parser\ParseArgumentsStageUnitTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.build" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

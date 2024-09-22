@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<CirConfiguration>
+  <OutputDirectory>C:\temp</OutputDirectory>
+  <Plugins location="..\..\..\plugins\">
+    <Plugin location="CheckHeaps\bin\Debug\">
+      <Assembly>CheckHeaps.dll</Assembly>
+    </Plugin>
+    <Plugin location="CheckHeapUse\bin\Debug\">
+      <Assembly>CheckHeapUse.dll</Assembly>
+    </Plugin>
+    <Plugin location="ElfDecompressor\bin\Debug\">
+      <Assembly>ElfDecompressor.dll</Assembly>
+    </Plugin>
+    <Plugin location="ElfFileReader\bin\Debug\">
+      <Assembly>ElfFileReader.dll</Assembly>
+    </Plugin>
+    <Plugin location="MainCoreFileReader\bin\Debug\">
+      <Assembly>MainCoreFileReader.dll</Assembly>
+    </Plugin>
+    <Plugin location="IOCoreFileReader\bin\Debug\">
+      <Assembly>IOCoreFileReader.dll</Assembly>
+    </Plugin>
+    <Plugin location="ElfIOSSignature\bin\Debug\">
+      <Assembly>ElfIOSSignature.dll</Assembly>
+    </Plugin>
+    <Plugin location="CoreIOSSignature\bin\Debug\">
+      <Assembly>CoreIOSSignature.dll</Assembly>
+    </Plugin>
+    <Plugin location="AppleAndPears\bin\Debug\">
+      <Assembly>AppleAndPears.dll</Assembly>
+    </Plugin>
+    <Plugin location="HeapFind\bin\Debug\">
+      <Assembly>HeapFind.dll</Assembly>
+    </Plugin>
+    <Plugin location="HeapParse\bin\Debug\">
+      <Assembly>HeapParse.dll</Assembly>
+    </Plugin>
+    <Plugin location="HeapParseIO\bin\Debug\">
+      <Assembly>HeapParseIO.dll</Assembly>
+    </Plugin>
+    <Plugin location="ProcessList\bin\Debug\">
+      <Assembly>ProcessList.dll</Assembly>
+    </Plugin>
+    <Plugin location="ParsePacketHeaders\bin\Debug\">
+      <Assembly>ParsePacketHeaders.dll</Assembly>
+    </Plugin>
+    <Plugin location="PacketHeaderDump\bin\Debug\">
+      <Assembly>PacketHeaderDump.dll</Assembly>
+    </Plugin>
+    <Plugin location="TextSegmentCompare\bin\Debug\">
+      <Assembly>TextSegmentCompare.dll</Assembly>
+    </Plugin>
+    <Plugin location="RodataSegmentCompare\bin\Debug\">
+      <Assembly>RodataSegmentCompare.dll</Assembly>
+    </Plugin>
+    <Plugin location="ReportSignature\bin\Debug\">
+      <Assembly>ReportSignature.dll</Assembly>
+    </Plugin>
+  </Plugins>
+  <Platforms location="..\..\..\PlatformPlugins\">
+    <Platform location="Cisco2600\bin\Debug\">
+      <Assembly>Cisco2600.dll</Assembly>
+    </Platform>
+    <Platform location="Cisco2691\bin\Debug\">
+      <Assembly>Cisco2691.dll</Assembly>
+    </Platform>
+    <Platform location="Cisco1700\bin\Debug\">
+      <Assembly>Cisco1700.dll</Assembly>
+    </Platform>
+  </Platforms>
+</CirConfiguration>

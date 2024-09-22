@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 2008, Recurity Labs GmbH.
+  All rights reserved.
+
+  Author: Simon Willnauer (simonw@recurtiy-labs.com)
+-->
+<project 
+	name="PluginHost" 
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd"
+>
+  <property name="root.dir" value="${path::get-full-path('../..')}"  />
+  <include buildfile="${root.dir}/common-build/common-project.xml" />
+	
+	<target name="init" depends="common.init">
+    <property name="HostInfoFile" value="${root.dir}\common-build\CustomerInfo\HostOwner.cs" overwrite="false" />
+     <!-- properties for AssemblyInfo.cs -->
+    <property name="assembly.version" value="1.0.0.0" overwrite="true"/>
+    <property overwrite="true" name="assembly.version.informational" value="1.0.0.0" />
+    <property overwrite="true" name="assembly.version.file" value="1.0.0.0" />
+    <property name="assembly.description" value=" Cisco Incident Response - Pluginmanagement component" />
+    <property name="assembly.product" value="CIR PluginHost" />
+		
+    <!-- Resources required for build -->
+    <assemblyfileset id="project.references" basedir=".">
+			<include name="${log4net.path}"/>
+		</assemblyfileset>
+
+    <resourcefileset id="project.resources" prefix="PluginHost" dynamicprefix="true">
+       <exclude name="bin/**/*.xml" />
+    </resourcefileset>
+
+    <!-- thrid party assemblies to copy to the build output directory -->
+    <assemblyfileset id="thirdparty.references" basedir=".">
+      <include name="${log4net.path}"/>
+    </assemblyfileset>
+
+    <!-- Sources to include / exclude in the assembly. -->
+    <fileset id="project.sources">
+			<include name="**/*.cs" />
+      <include name="${HostInfoFile}"/>
+      <exclude name="HostOwner.cs"/>
+			<exclude name="Test/**/*"/>
+			<exclude name="${default.exclude}"/>
+		</fileset>
+
+    <fileset id="project.sources.test">
+			<include name="**/*.cs" />
+			<exclude name="${default.exclude}"/>
+		</fileset>
+  </target>
+
+  <!-- Generate AssemblyInfo.cs -->
+  <target name="generate-assemblyinfo" depends="common.generate-assemblyinfo" />
+
+  <!-- Build the assembly -->
+  <target name="build" description="Build PluginHost"
+		depends="init generate-assemblyinfo common.compile-dll copy-resources" >
+  </target>
+
+ 
+
+	
+</project>

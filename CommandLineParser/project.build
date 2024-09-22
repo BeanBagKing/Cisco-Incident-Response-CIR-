@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 2008, Recurity Labs GmbH.
+  All rights reserved.
+
+  Author: Simon Willnauer (simonw@recurtiy-labs.com)
+-->
+<project
+	name="RecurityCommandlineParser"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd"
+>
+
+  <property name="root.dir" value="${path::get-full-path('..')}"  />
+  <include buildfile="${root.dir}/common-build/common-project.xml" />
+
+  <target name="init" depends="common.init">
+    <!-- properties for AssemblyInfo.cs -->
+    <property name="assembly.version" value="1.0.0.0" overwrite="true"/>
+    <property overwrite="true" name="assembly.version.informational" value="0.1.0.0" />
+    <property overwrite="true" name="assembly.version.file" value="0.1.0.0" />
+    <property name="assembly.description" value="Simple but Powerful commandline parser utility." />
+    <property name="assembly.product" value="Recurity-Labs CommandlineParser utility." />
+
+    <!-- Resources required for build -->
+    <assemblyfileset id="project.references" basedir=".">
+    </assemblyfileset>
+
+    <!-- Resources required for build -->
+    <assemblyfileset id="project.references.test" basedir=".">
+      <include name="${nunit.path}"/>
+      <include name="${nunit.extension}"/>
+      <include name="${nunit.addin}"/>
+    </assemblyfileset>
+
+    <resourcefileset id="project.resources" prefix="Recurity.CIR.Engine" dynamicprefix="true">
+      <include name="/**/*.png"/>
+      <include name="/**/*.xsl"/>
+      <include name="/**/*.css"/>
+      <exclude name="bin/**/*" />
+      <exclude name="obj/**/*" />
+      <exclude name=".svn/**/*" />
+    </resourcefileset>
+
+    <resourcefileset id="project.resources.test" prefix="Recurity.CIR.Engine" dynamicprefix="true">
+      <include name="/**/*.png"/>
+      <include name="/**/*.xsl"/>
+      <include name="/**/*.css"/>
+      <exclude name="bin/**/*" />
+      <exclude name="obj/**/*" />
+      <exclude name=".svn/**/*" />
+    </resourcefileset>
+      
+
+    <!-- Sources to include / exclude in the assembly. -->
+    <fileset id="project.sources">
+      <include name="**/*.cs" />
+      <exclude name="UnitTest/**/*"/>
+      <exclude name="${default.exclude}"/>
+    </fileset>
+
+    <fileset id="project.sources.test">
+      <include name="**/*.cs" />
+      <exclude name="${default.exclude}"/>
+    </fileset>
+    
+    
+
+    <!-- thrid party assemblies to copy to the build output directory -->
+    <assemblyfileset id="thirdparty.references" basedir=".">
+    </assemblyfileset>
+
+    <!-- thrid party assemblies to copy to the build output directory -->
+    <assemblyfileset id="thirdparty.references.test" basedir=".">
+      <include name="${nunit.path}"/>
+      <include name="${nunit.extension}"/>
+      <include name="${nunit.addin}"/>
+    </assemblyfileset>
+  </target>
+
+  <target name="generate-assemblyinfo" depends="init common.generate-assemblyinfo" />
+
+  <target name="build-dependencies" description="builds all dependency dlls">
+   
+  </target>
+
+  <target name="build" description="Build Engine"
+		depends="build-dependencies generate-assemblyinfo common.compile-dll copy-resources" >
+  </target>
+  <target name="build-test" description="Build PluginIntegrationTest"
+      depends="clean build-dependencies generate-assemblyinfo common.compile-test-dll copy-test-resources" >
+
+  </target>
+  <target name="test" depends="build-test" >
+    <call target="run-tests"/>
+  </target>
+</project>

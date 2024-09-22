@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 2008, Recurity Labs GmbH.
+  All rights reserved.
+
+  Author: Simon Willnauer (simonw@recurtiy-labs.com)
+-->
+<project
+	name="circli"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd"
+>
+  <property name="root.dir" value="${path::get-full-path('..')}"  />
+  <include buildfile="${root.dir}/common-build/common-project.xml" />
+
+  <target name="init" depends="common.init">
+    <property name="assembly.type" value="exe" overwrite="true"/>
+    <!-- properties for AssemblyInfo.cs -->
+    <property name="assembly.version" value="1.0.0.0" overwrite="true"/>
+    <property overwrite="true" name="assembly.version.informational" value="1.0.0.0" />
+    <property overwrite="true" name="assembly.version.file" value="1.0.0.0" />
+    <property name="assembly.description" value=" Cisco Incident Response - CommandlineInterface executable" />
+    <property name="assembly.product" value="CIR CommandlineInterface" />
+
+    <!-- Resources required for build -->
+    <assemblyfileset id="project.references" basedir=".">
+      <include name="${bin.dir}/PluginHost.dll" />
+      <include name="${bin.dir}/Engine.dll" />
+      <include name="${log4net.path}"/>
+      <include name="${bin.dir}/RecurityCommandlineParser.dll" />
+
+    </assemblyfileset>
+
+    <resourcefileset id="project.resources" prefix="CLI" dynamicprefix="true">
+      <exclude name="bin/**/*.xml" />
+    </resourcefileset>
+
+    <!-- thrid party assemblies to copy to the build output directory -->
+    <assemblyfileset id="thirdparty.references" basedir=".">
+      <include name="${log4net.path}"/>
+    </assemblyfileset>
+
+    <!-- Sources to include / exclude in the assembly. -->
+    <fileset id="project.sources">
+      <include name="**/*.cs" />
+      <exclude name="Test/**/*"/>
+      <exclude name="${default.exclude}"/>
+    </fileset>
+
+    <fileset id="project.sources.test">
+      <include name="**/*.cs" />
+      <exclude name="${default.exclude}"/>
+    </fileset>
+  </target>
+
+  <target name="generate-assemblyinfo" depends="init common.generate-assemblyinfo" />
+
+  <target name="build-dependencies" description="builds all dependency dlls">
+    <property name="binary-dependency" value="${bin.dir}/PluginHost.dll" overwrite="true"/>
+    <nant buildfile="${root.dir}/pluginHost/PluginHost/project.build" unless="${file::exists(binary-dependency)}" />
+    <property name="binary-dependency" value="${bin.dir}/Engine.dll" overwrite="true"/>
+    <nant buildfile="${root.dir}/Engine/project.build" unless="${file::exists(binary-dependency)}" />
+    <property name="binary-dependency" value="${bin.dir}/RecurityCommandlineParser.dll" overwrite="true"/>
+    <nant buildfile="${root.dir}/CommandLineParser/project.build" unless="${file::exists(binary-dependency)}" />
+  </target>
+  
+  <target name="build" description="Build CLI"
+		depends="build-dependencies generate-assemblyinfo common.compile-exe copy-resources" >
+
+  </target>
+</project>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+  <xsd:element name="Report">
+  <xsd:complexType>
+    <xsd:sequence>
+      <xsd:element name="Summary" type="xsd:string" />
+      <xsd:any minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Author" type="xsd:string" use="required" fixed="1" />
+    <xsd:attribute name="Details" type="xsd:unsignedInt" use="required" fixed="1" />
+    <xsd:attribute name="Description" type="xsd:string" use="optional" fixed="1" />
+    <xsd:attribute name="State" type="xsd:unsignedInt" use="required" fixed="1" />
+    <xsd:attribute name="IsPlugin" type="xsd:boolean" use="required"/>
+  </xsd:complexType>
+  </xsd:element>
+  
+</xsd:schema>

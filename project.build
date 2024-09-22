@@ -1,0 +1,142 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (c) 2008, Recurity Labs GmbH.
+  All rights reserved.
+
+  Author: Simon Willnauer (simonw@recurtiy-labs.com)
+-->
+<project 
+	name="CIR-Main" 
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd"
+>
+	<property name="root.dir" value="${path::get-full-path('.')}"  />
+  <include buildfile="${root.dir}/common-build/common-project.xml" />
+  
+  
+	<target name="build" depends="clean-all">
+		<nant target="build">
+	    <buildfiles>
+        <exclude name="PluginIntegrationTests/project.build" />
+        <include name="**/project.build" />
+        <exclude name="${project::get-buildfile-path()}" />
+          <exclude name="./build/**/*" />
+          <exclude name="./dist/**/*" />
+          <exclude name="./ThirdParty/**/*" />
+	     </buildfiles>
+		</nant>
+	</target>
+
+  <target name="run-test" depends="clean-all" >
+    
+    <!-- Unit tests-->
+    <nant target="test">
+      <buildfiles>
+        <include name="CommandLineParser/project.build" />
+      </buildfiles>
+    </nant>
+    <!-- Integration Tests-->
+
+    <nant target="test">
+      <buildfiles>
+        <include name="PluginIntegrationTests/project.build" />
+      </buildfiles>
+    </nant>
+
+  </target>
+
+  <!-- Default dist target -->
+  <target name="dist-CIR" >
+    <call target="dist-Recurity" />
+  </target>
+
+  <!-- Commonly used target to execute a dist build -->
+  <target name="build-dist" depends="init-dist, clean-bin">
+    
+    <nant target="build">
+      <buildfiles>
+        <include name="cli/project.build" />
+        <include name="PlatformPlugins/*/project.build" />
+        <include name="plugins/*/project.build" />
+        <include name="Engine/project.build" />
+        <include name="PluginHost/project.build" />
+        <include name="CommandLineParser/project.build" />
+      </buildfiles>
+    </nant>
+    <property name="customer.dist.dir" value="${path::combine(dist.dir, customer.name)}" overwrite="true" />
+    <property name="customer.dist.content.dir" value="${path::combine(customer.dist.dir, 'content')}" overwrite="true" />
+    <property name="customer.dist.plugin.dir" value="${path::combine(customer.dist.content.dir, 'Plugins')}" overwrite="true" />
+    <property name="customer.dist.platform.dir" value="${path::combine(customer.dist.content.dir, 'PlatformPlugins')}" overwrite="true" />
+    
+    <delete dir="${customer.dist.dir}" if="${directory::exists(customer.dist.dir)}"/>
+    
+    <mkdir dir="${customer.dist.dir}"/>
+    <mkdir dir="${customer.dist.content.dir}"/>
+    <mkdir dir="${customer.dist.plugin.dir}"/>
+    <mkdir dir="${customer.dist.platform.dir}"/>
+    
+    <!-- copy third party libs -->
+    <copy  file="${log4net.path}" todir="${customer.dist.content.dir}"/>
+    <copy  file="${zlib.path}" todir="${customer.dist.content.dir}"/>
+    <copy  file="${CSharpOptParse.path}" todir="${customer.dist.content.dir}"/>
+    
+    <!-- copy base libs -->
+    <copy  file="${bin.dir}/Engine.dll" todir="${customer.dist.content.dir}"/>
+    <copy  file="${bin.dir}/PluginHost.dll" todir="${customer.dist.content.dir}"/>
+    <copy  file="${bin.dir}/circli.exe" todir="${customer.dist.content.dir}"/>
+    <copy  file="${bin.dir}/circli.exe.config" todir="${customer.dist.content.dir}"/>
+    <copy  file="${bin.dir}/RecurityCommandLineParser.dll" todir="${customer.dist.content.dir}"/>
+    
+    <!-- the license file -->
+    <copy  file="${cir.license.file}" todir="${customer.dist.content.dir}"/>
+        
+  </target>
+
+  
+
+  
+  <!-- Builds a CIR dist version for customer Recurity Labs GPL-->
+  <target name="dist-Recurity" depends="init-dist">
+    <property name="customer.name" value="GPL" overwrite="true" />
+    <!-- Host info / licence file -->
+    <property name="HostInfoFile" value="${path::combine(root.dir, 'common-build\CustomerInfo\GPL.cs')}" overwrite="true" />
+    <property name="key.file" value="${default.signature.key}" overwrite="true" />
+    <call target="build-dist" />
+
+
+    <!-- All plugins to include -->
+    <copy todir="${customer.dist.plugin.dir}">
+      <fileset basedir="${bin.dir}">
+        <include name="AppleAndPears.dll" />
+        <include name="CheckHeaps.dll" />
+        <include name="CheckHeapUse.dll" />
+        <include name="CoreIOSSignature.dll" />
+        <include name="ElfDecompressor.dll" />
+        <include name="ElfFileReader.dll" />
+        <include name="ElfIOSSignature.dll" />
+        <include name="HeapFind.dll" />
+        <include name="HeapParse.dll" />
+        <include name="HeapParseIO.dll" />
+        <include name="IOCoreFileReader.dll" />
+        <include name="MainCoreFileReader.dll" />
+        <include name="PacketHeaderDump.dll" />
+        <include name="ParsePacketHeaders.dll" />
+        <include name="ProcessList.dll" />
+        <include name="ReportSignature.dll" />
+        <include name="RodataSegmentCompare.dll" />
+        <include name="TextSegmentCompare.dll" />
+        <include name="CompareHashs.dll" />
+      </fileset>
+    </copy>
+    
+    <!-- All platformas to include -->
+    <copy todir="${customer.dist.platform.dir}">
+      <fileset basedir="${bin.dir}">
+        <include name="Cisco1700.dll" />
+        <include name="Cisco2600.dll" />
+        <include name="Cisco2691.dll" />
+      </fileset>
+    </copy>
+  </target>
+  
+</project>

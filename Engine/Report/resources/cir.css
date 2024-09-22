@@ -1,0 +1,53 @@
+h1  {
+        font-family:Helvetica,Arial;
+	
+}
+
+h2,h3  {
+        font-family:Helvetica,Arial;
+
+}
+
+text,p,b,body  {
+        font-family:Helvetica,Arial;
+	line-height:120%;
+}
+
+th {
+	font-family:Helvetica,Arial;
+	line-height:120%;
+	background: #CAE8EA ;
+	border-right: 1px solid #ffffff;
+	border-bottom: 1px solid #ffffff;
+	border-top: 1px solid #ffffff;
+	letter-spacing: 2px;
+
+	text-align: left;
+	padding: 6px 6px 6px 12px;
+
+}
+
+td {
+	border-right: 1px solid #C1DAD7;
+	border-bottom: 1px solid #C1DAD7;
+	border-left: 1px solid #C1DAD7;	
+
+	padding: 6px 6px 6px 12px;
+
+}
+
+a  {
+        font-family:Helvetica,Arial;
+	font-weight:bold;
+	line-height:150%;
+	color: blue;
+}
+
+ul  {
+        font-family:Helvetica,Arial;
+	list-style-type:square;
+}
+
+pre  {
+        font-family:Courier;
+}

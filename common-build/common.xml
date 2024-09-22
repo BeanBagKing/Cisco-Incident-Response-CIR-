@@ -1,0 +1,153 @@
+<?xml version="1.0" ?>
+<project xmlns="http://nant.sf.net/release/0.85-rc3/nant.xsd">
+
+  <property name="sign" value="true" overwrite="false" />
+
+	<property name="default.signature.key" value="${path::get-full-path(path::combine(root.dir,'common-build\DebugKey.snk'))}" overwrite="false" />
+	<property name="key.file" value="${default.signature.key}" overwrite="false" />
+	<!-- 
+		Path to the folder that contain the external assemblies.  For net-1.1 the values will
+		be lib, lib/net, and lib/net/1.1 respectively.
+	-->
+	<property name="lib.dir" value="${root.dir}/3rdParty" dynamic="true" />
+	<property name="lib.family.dir" value="${path::combine(lib.dir, framework::get-family(framework::get-target-framework()))}" dynamic="true" />
+	<property name="lib.framework.dir" value="${path::combine(lib.family.dir, version::to-string(framework::get-version(framework::get-target-framework())))}" dynamic="true" />
+
+	<!-- 
+		These are used to set the correct attributes in AssemblyInfo.cs.  
+	-->
+	<property name="project.company" value="Recurity Labs GmbH" />
+  <property name="project.name" value="${project::get-name()}"/>
+
+	<property name="project.version" value="1.0" overwrite="false" />
+	<!-- Compute short project version (major.minor) using a regex -->
+	<regex input="${project.version}" pattern="^(?'shortversion'\d+\.\d+)" />
+	<property name="project.version.short" value="${shortversion}" />
+
+	
+	
+
+	<!-- debug|release -->
+	<property name="build.defines" value="release" />
+  <property name="assembly.type" value="dll"/>
+
+	<!-- platform specific properties. These are the defaults -->
+	<property name="current.build.defines" value="${build.defines}" />
+
+	
+	<include buildfile="CIR-properties.xml" />
+
+	<!-- named project configurations -->
+	<target name="set-debug-project-configuration" description="Perform a 'debug' build">
+		<property name="build.debug" value="true" overwrite="false"/>
+    <property name="build.release" value="false" overwrite="false"/>
+		<property name="build.name" value="CIR-${project.version}-${project.config}" overwrite="false"/>
+  </target>
+
+  <target name="set-release-project-configuration" description="Perform a 'release' build">
+    <property name="build.debug" value="false" overwrite="false"/>
+    <property name="build.release" value="true" overwrite="false"/>
+    <property name="build.name" value="CIR-${project.version}" overwrite="false"/>
+	</target>
+
+	<target name="set-project-configuration">
+		<property name="project.config" value="${build.defines}" overwrite="false" />
+		<if test="${not(target::exists('set-' + project.config + '-project-configuration'))}">
+			<fail message="Unknown configuration: '${project.config}'" />
+		</if>
+		<call target="set-${project.config}-project-configuration" />
+    <property name="build.root.dir" value="${root.dir}/build/${build.name}" />
+		<property name="dist.root.dir" value="${root.dir}/dist/${build.name}" />
+    <property name="dist.dir" value="${dist.root.dir}/${nant.settings.currentframework}" dynamic="true" />
+		<property name="build.dir" value="${build.root.dir}" />
+		<property name="bin.dir" value="${build.dir}/bin/${nant.settings.currentframework}" dynamic="true" />
+	</target>
+
+	<target name="set-framework-configuration">
+		<if test="${not(target::exists('set-'+framework::get-target-framework()+'-framework-configuration'))}">
+			<fail message="The '${framework::get-target-framework()}' framework is not supported by this version of NHibernate." />
+		</if>
+		<call target="set-${framework::get-target-framework()}-framework-configuration" />
+	</target>
+
+	<target name="set-net-2.0-framework-configuration">
+		<property name="nant.settings.currentframework" value="net-2.0" />
+		<property name="current.build.defines" value="${build.defines}NET,NET_2_0" />
+		
+		<property name="link.sdkdoc.version" value="SDK_v1_1" />
+		<property name="merge.targetplatform" value="v2" />
+	</target>
+
+
+	<target name="display-current-runtime">
+		<echo message="" />
+		<echo message=" ${framework::get-description(framework::get-target-framework())}" />
+		<echo message="" />
+		<echo message="framework : ${framework::get-target-framework()}" />
+		<echo message="description : ${framework::get-description(framework::get-target-framework())}" />
+		<echo message="sdk directory : ${framework::get-sdk-directory(framework::get-target-framework())}" />
+		<echo message="framework directory : ${framework::get-framework-directory(framework::get-target-framework())}" />
+		<echo message="assembly directory : ${framework::get-assembly-directory(framework::get-target-framework())}" />
+		<echo message="runtime engine : ${framework::get-runtime-engine(framework::get-target-framework())}" />
+		<echo message="" />
+	</target>
+
+	<target name="common.init"
+		depends="set-framework-configuration set-project-configuration"
+		description="Initializes build properties">
+    <!-- Load the contrib dll and the tasks -->
+    <loadtasks assembly="${nantcontrib.path}" />
+		<mkdir dir="${bin.dir}"/>
+		<fileset id="project.sources" failonempty="true">
+			<include name="*.cs" />
+		</fileset>
+		<resourcefileset id="project.resources" />
+	  <fileset id="project.supportfiles">
+		
+	  </fileset>
+		<fileset id="project.delete" basedir="${bin.dir}">
+			<include name="${project::get-name()}.*"/>
+		</fileset>
+    <fileset id="project.dist.delete" basedir="${dist.dir}">
+      <include name="${project::get-name()}.*"/>
+    </fileset>
+    
+	</target>
+	
+
+	<target name="clean" depends="common.init">
+
+		  <delete>
+				<fileset refid="project.delete"/>
+			</delete>
+			<mkdir dir="${bin.dir}"/>
+      
+	</target>
+  <target name="clean-dist" depends="clean">
+    <delete>
+      <fileset refid="project.dist.delete"/>
+    </delete>
+    <mkdir dir="${dist.dir}"/>
+  </target>
+
+  <target name="init-dist" depends="common.init">
+  
+  </target>
+  <target name="show-version">
+    <echo message="Version: ${project.version}"/>
+  </target>
+	
+	<target name="clean-all" depends="common.init">
+		<delete dir="${bin.dir}"/>
+    <delete dir="${dist.dir}"/>
+		<mkdir dir="${bin.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+	</target>
+  
+  <target name="clean-bin" depends="common.init">
+    <delete dir="${bin.dir}"/>
+    <mkdir dir="${bin.dir}"/>
+  </target>
+
+
+</project>

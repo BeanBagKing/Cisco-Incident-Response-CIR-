@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+<Signature>
+		<image>C2600-IK9S-M</image>
+		<family>C2600</family>
+		<featureset>IP|3DES PLUS</featureset>
+		<version>12.2(11)T</version>
+		<media>RAM</media>
+		<detectedplatform>C2600</detectedplatform>
+</Signature>
+
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="SignatureResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="image" type="xsd:string"/>
+        <xsd:element name="family" type="xsd:string"/>
+        <xsd:element name="featureset" type="xsd:string"/>
+        <xsd:element name="version" type="xsd:string"/>
+        <xsd:element name="media" type="xsd:string"/>
+        <xsd:element name="detectedplatform" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+<!--
+<Heapblock>
+		<address>3700000</address>
+		<state>free</state>
+		<by>F299E5B</by>
+		<for>(fragment)</for>
+	</Heapblock>
+-->
+  <xsd:element name="HeapBlockResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="address" type="xsd:unsignedLong"/>
+        <xsd:element name="state" type="xsd:string"/>
+        <xsd:element name="by" type="xsd:unsignedLong"/>
+        <xsd:element name="for" type="xsd:string"/>
+        <xsd:element name="pid" type="xsd:unsignedLong"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--
+<PacketHeader>
+		<address>8276BFFC</address>
+		<next>829382F4</next>
+		<frame>370020A</frame>
+		<size>60</size>
+	</PacketHeader>
+-->
+  <xsd:element name="PacketHeaderResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="address" type="xsd:unsignedLong"/>
+        <xsd:element name="next" type="xsd:unsignedLong"/>
+        <xsd:element name="frame" type="xsd:unsignedLong"/>
+        <xsd:element name="size" type="xsd:unsignedInt"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+
+  <!--
+ <Segment><name>.rodata</name><address>817DAA08</address><size>10122232</size></Segment>
+ -->
+  <xsd:element name="SegmentResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="name" type="xsd:string"/>
+        <xsd:element name="address" type="xsd:unsignedLong"/>
+        <xsd:element name="size" type="xsd:unsignedLong"/>
+        
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+
+  <!--
+ <SegmentDiffResult><name></name><virtualAddress><virtualAddress><offsetElf></offsetElf><offsetCore><offsetCore></SegmentDiffResult>
+ -->
+  <xsd:element name="SegmentDiffResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="SegmentName" type="xsd:string"/>        
+        <xsd:element name="virtualAddress" type="xsd:unsignedLong"/>
+        <xsd:element name="offsetElf" type="xsd:unsignedLong" />
+        <xsd:element name="offsetCore" type="xsd:unsignedLong" />
+        <xsd:element name="diffLength" type="xsd:unsignedLong" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="ReportSignaturesResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ImageSignature" type="xsd:string"/>
+        <xsd:element name="CoreSignature" type="xsd:string" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="ProcessRecordResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="processName" type="xsd:string"/>
+        <xsd:element name="pid" type="xsd:unsignedLong"/>
+        <xsd:element name="stackAddress" type="xsd:unsignedLong"/>
+        <xsd:element name="stackAddressOld" type="xsd:unsignedLong"/>
+        <xsd:element name="stackSize" type="xsd:unsignedLong"/>
+        <xsd:element name="stackLowLimit" type="xsd:unsignedLong"/>
+        <xsd:element name="cpuTicks" type="xsd:unsignedLong"/>
+        <xsd:element name="cpuUsage5sec" type="xsd:float"/>
+        <xsd:element name="cpuUsage1min" type="xsd:float"/>
+        <xsd:element name="cpuUsage5min" type="xsd:float"/>
+        <xsd:element name="cpuInvoke" type="xsd:unsignedLong"/>
+        <xsd:element name="memMalloc" type="xsd:unsignedLong"/>
+        <xsd:element name="memFree" type="xsd:unsignedLong"/>
+        <xsd:element name="memPoolAlloc" type="xsd:unsignedLong"/>
+        <xsd:element name="memPoolFree" type="xsd:unsignedLong"/>
+        <xsd:element name="caller" type="xsd:unsignedLong"/>
+        <xsd:element name="callee" type="xsd:unsignedLong"/>
+        <xsd:element name="isProfiled" type="xsd:boolean"/>
+        <xsd:element name="isAnalyzed" type="xsd:boolean"/>
+        <xsd:element name="isBlockedAtCrash" type="xsd:boolean"/>
+        <xsd:element name="isCrashed" type="xsd:boolean"/>
+        <xsd:element name="isKilled" type="xsd:boolean"/>
+        <xsd:element name="isCorrupt" type="xsd:boolean"/>
+        <xsd:element name="isPreferringNew" type="xsd:boolean"/>
+        <xsd:element name="isOnOldQueue" type="xsd:boolean"/>
+        <xsd:element name="isWakeupPosted" type="xsd:boolean"/>
+        <xsd:element name="isProfiledProcess" type="xsd:boolean"/>
+        <xsd:element name="isProcessArgValid" type="xsd:boolean"/>
+        <xsd:element name="isInitProcess" type="xsd:boolean"/>
+        <xsd:element name="processRecordAddress" type="xsd:unsignedLong"/>
+        <xsd:element name="fromProcessArray" type="xsd:boolean"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="CheckHeapReportResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="blockAddress" type="xsd:unsignedLong"/>
+        <xsd:element name="issue" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="CheckHeapUseReportResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pid" type="xsd:unsignedLong"/>
+        <xsd:element name="processName" type="xsd:string"/>
+        <xsd:element name="numberOfBlock" type="xsd:unsignedLong"/>
+        <xsd:element name="sumOfBytes" type="xsd:unsignedLong"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+
+
+  <xsd:element name="RunPluginsResult">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ExecutedPlugin" type="ExecutedPlugin" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="ExecutedPlugin">
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string"/>
+      <xsd:element name="version" type="xsd:string"/>
+      <xsd:element name="publickey" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+</xsd:schema>

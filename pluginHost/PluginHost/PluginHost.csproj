@@ -1,0 +1,77 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D43FA185-16A7-4B09-A5E9-8C358310EB96}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PluginHost</RootNamespace>
+    <AssemblyName>PluginHost</AssemblyName>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty\Runtime\log4net-1.2.10\bin\net\2.0\release\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractBackgroundPlugin.cs">
+    </Compile>
+    <Compile Include="HostOwner.cs" />
+    <Compile Include="IBackgroundPlugin.cs" />
+    <Compile Include="IPlugin.cs" />
+    <Compile Include="IPluginResult.cs" />
+    <Compile Include="PluginError.cs" />
+    <Compile Include="PluginEvents.cs" />
+    <Compile Include="PluginHost.cs" />
+    <Compile Include="PluginValidation\KeyTokenPluginValidator.cs" />
+    <Compile Include="PluginValidation\PluginValidator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="State\CancledState.cs" />
+    <Compile Include="State\CompletedState.cs" />
+    <Compile Include="State\ErrorState.cs" />
+    <Compile Include="State\ExceptionState.cs" />
+    <Compile Include="State\InitializedState.cs" />
+    <Compile Include="State\PluginExecutionState.cs" />
+    <Compile Include="State\PluginStateMachine.cs" />
+    <Compile Include="State\ReadyState.cs" />
+    <Compile Include="State\RunningState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.build" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
